@@ -3,7 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="./public/css/main.css" />
     <title>Document</title>
   </head>
-  <body></body>
+  <body>
+    <div id="desktop">
+      <div class="window">
+        <!-- Window Header -->
+        <div class="window__header">
+          <p class="window__name">Terminal</p>
+
+          <div class="btn__group">
+            <button class="window__btn min">
+              <i data-lucide="minus"></i></button
+            ><button class="window__btn max">
+              <i data-lucide="maximize-2"></i></button
+            ><button class="window__btn close"><i data-lucide="x"></i></button>
+          </div>
+        </div>
+
+        <!-- Window Content -->
+        <div class="window__content">
+          <p>Content not available.</p>
+        </div>
+      </div>
+      <div class="window" id="file-manager">
+        <!-- Window Header -->
+        <div class="window__header">
+          <p class="window__name">File Manager</p>
+
+          <div class="btn__group">
+            <button class="window__btn min">
+              <i data-lucide="minus"></i></button
+            ><button class="window__btn max">
+              <i data-lucide="maximize-2"></i></button
+            ><button class="window__btn close"><i data-lucide="x"></i></button>
+          </div>
+        </div>
+
+        <!-- Window Content -->
+        <div class="window__content file-manager">
+          <p>Content not available.</p>
+        </div>
+      </div>
+    </div>
+    <!-- <div id="taskbar"></div> -->
+
+    <script>
+      lucide.createIcons();
+    </script>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>
