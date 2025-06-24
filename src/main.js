@@ -26,7 +26,7 @@ const allApps = {
     icon: "<i class='ri-delete-bin-5-fill'></i>",
     content: "",
   },
-  folder: {
+  fileManager: {
     name: "File Manager",
     icon: "<i class='ri-folder-6-fill'></i>",
     content: "",
@@ -68,8 +68,6 @@ function toggleMaximizeWindow(appWindow) {
       left: "0",
       width: "100vw",
       height: "calc(100vh - 3rem)",
-      background: "#111",
-      
     });
     appWindow.dataset.maximized = "true";
   } else {
