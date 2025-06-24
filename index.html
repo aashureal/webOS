@@ -13,31 +13,7 @@
   </head>
   <body>
     <div id="desktop">
-      <div class="app__grid">
-        <!-- Icon -->
-        <div class="desktop__icon">
-          <i class="ri-computer-fill"></i>
-          <span class="app__name">My Computer</span>
-        </div>
-
-        <!-- Icon -->
-        <div class="desktop__icon">
-          <i class="ri-booklet-fill"></i>
-          <span class="app__name">Noepad</span>
-        </div>
-
-        <!-- Icon -->
-        <div class="desktop__icon">
-          <i class="ri-notion-fill"></i>
-          <span class="app__name">Notion</span>
-        </div>
-
-        <!-- Icon -->
-        <div class="desktop__icon">
-          <i class="ri-delete-bin-5-fill"></i>
-          <span class="app__name">Trash</span>
-        </div>
-      </div>
+      <div class="app__grid"></div>
     </div>
 
     <div id="taskbar">
@@ -46,16 +22,16 @@
 
       <!-- canter part -->
       <div class="part task__items__list">
-        <button class="task__item">
+        <button class="task__item desktop__icon" data-app="apps">
           <i class="ri-apps-fill"></i>
         </button>
-        <button class="task__item">
+        <button class="task__item desktop__icon" data-app="folder">
           <i class="ri-folder-6-fill"></i>
         </button>
-        <button class="task__item">
+        <button class="task__item desktop__icon" data-app="chrome">
           <i class="ri-chrome-fill"></i>
         </button>
-        <button class="task__item">
+        <button class="task__item desktop__icon" data-app="terminal">
           <i class="ri-terminal-box-fill"></i>
         </button>
       </div>
@@ -69,14 +45,14 @@
         </div>
 
         <div class="date__time__box">
-          <p class="time">00:00</p>
-          <p class="date">Tues Jun 24</p>
+          <p class="time taskbar__time">00:00</p>
+          <p class="date taskbar__date"></p>
         </div>
       </div>
     </div>
 
-    <div class="app__window">
-      <!-- Window Header -->
+    <!-- <div class="app__window">
+
       <div class="window__header">
         <p class="window__name">Terminal</p>
 
@@ -89,15 +65,12 @@
         </div>
       </div>
 
-      <!-- Window Content -->
+  
       <div class="window__content terminal-content">
         <p>Content not available.</p>
       </div>
-    </div>
+    </div> -->
 
-    <script>
-      lucide.createIcons();
-    </script>
 
     <script type="module" src="./src/main.js"></script>
   </body>
