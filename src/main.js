@@ -236,5 +236,11 @@ function getFormattedDate() {
 
 const taskbarTimeElement = document.querySelector(".taskbar__time");
 const taskbarDateElement = document.querySelector(".taskbar__date");
-taskbarTimeElement.textContent = getFormattedTime();
+
 taskbarDateElement.textContent = getFormattedDate();
+taskbarTimeElement.textContent = getFormattedTime();
+
+// Optional: keep time updating every second
+setInterval(() => {
+  taskbarTimeElement.textContent = getFormattedTime();
+}, 1000);
