@@ -112,9 +112,15 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1009/1009149.png" />
         <div>Notepad</div>
       </div>
+      <div class="desktop-icon" data-app="file-manager">
+        <img src="https://cdn-icons-png.flaticon.com/512/1009/1009149.png" />
+        <div>File Manager</div>
+      </div>
     </div>
 
-    <div class="taskbar"></div>
+    <div class="taskbar">
+
+    </div>
 
     <script>
       let zIndexCounter = 2;
@@ -127,6 +133,7 @@
             clickCount = 0;
           }, 300);
           if (clickCount === 2) openApp(icon.dataset.app);
+          console.log(icon.dataset.app);
         });
       });
 
@@ -154,7 +161,7 @@
             <button class="close">X</button>
           </div>
         </div>
-        <iframe src="https://example.com" title="${appName}"></iframe>
+        <iframe src="https://www.youtube.com" title="${appName}"></iframe>
       `;
 
         document.body.appendChild(win);

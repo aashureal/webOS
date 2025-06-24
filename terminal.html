@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Web Terminal</title>
+  <style>
+    body {
+      background: #000;
+      color: #0f0;
+      font-family: monospace;
+      margin: 0;
+      padding: 10px;
+    }
+    #terminal {
+      white-space: pre-wrap;
+      min-height: 90vh;
+    }
+    #input-line {
+      display: inline;
+    }
+    input {
+      background: transparent;
+      border: none;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 16px;
+      outline: none;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal">
+    <div>> <span id="input-line"><input type="text" id="command-input" autofocus></span></div>
+  </div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+    const input = document.getElementById("command-input");
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        const command = input.value.trim();
+        const output = handleCommand(command);
+        terminal.innerHTML += `\n> ${command}\n${output}\n> `;
+        input.value = "";
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+    });
+
+    function handleCommand(cmd) {
+      switch (cmd) {
+        case "help":
+          return "Available commands:\nhelp\nabout\nclear\nhello";
+        case "about":
+          return "Web Terminal v1.0 - Coded by You!";
+        case "hello":
+          return "Hello, world!";
+        case "clear":
+          terminal.innerHTML = "> ";
+          return "";
+        default:
+          return `Command not found: ${cmd}`;
+      }
+    }
+  </script>
+</body>
+</html>

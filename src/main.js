@@ -4,11 +4,10 @@ import loadPartial from "./loadPartial";
 // Init
 const styler = new Styler();
 
-const appWindow = document.querySelectorAll("#window");
-const windowContent = document.querySelector(".window__content");
 
+// Window Drag Handler
 (function windowDragHandler() {
-  document.querySelectorAll(".window").forEach((win) => {
+  document.querySelectorAll(".app__window").forEach((win) => {
     win.styler({
       drag: ".window__header",
       resize: true,
@@ -16,12 +15,10 @@ const windowContent = document.querySelector(".window__content");
   });
 })();
 
-// let fileManager = document.querySelector(".file-manager");
-// loadPartial(fileManager, "../windows/file-manager.html");
-// appWindow.enableDrag(".window__header");
 
-function maxWindow() {
-  alert("Chala");
-}
+let Terminal = document.querySelector('.terminal-content')
 
-// maxWindow();
+loadPartial(Terminal, '../windows/file-manager.html')
+
+
+// Window Controls

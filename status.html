@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Status Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background: #f4f4f4;
+    }
+    h1 {
+      color: #333;
+    }
+    .status {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin-top: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Device Status Checker</h1>
+
+  <div class="status">
+    <strong>Internet Status:</strong>
+    <div id="wifi-status">Checking...</div>
+  </div>
+
+  <div class="status">
+    <strong>Bluetooth Status:</strong>
+    <div id="bt-status">Not checked</div>
+    <button onclick="checkBluetooth()">Check Bluetooth</button>
+  </div>
+
+  <script>
+    // Wi-Fi/Internet Status Checker
+    function updateNetworkStatus() {
+      const status = navigator.onLine ? "Connected to Internet" : "No Internet Connection";
+      document.getElementById("wifi-status").textContent = status;
+    }
+
+    window.addEventListener("online", updateNetworkStatus);
+    window.addEventListener("offline", updateNetworkStatus);
+    updateNetworkStatus();
+
+    // Bluetooth Status Checker
+    async function checkBluetooth() {
+      const statusEl = document.getElementById("bt-status");
+
+      if (!navigator.bluetooth) {
+        statusEl.textContent = "Web Bluetooth not supported in this browser.";
+        return;
+      }
+
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          acceptAllDevices: true,
+        });
+
+        statusEl.textContent = `Device Found: ${device.name || "Unnamed Device"}`;
+
+        device.addEventListener('gattserverdisconnected', () => {
+          statusEl.textContent = "Bluetooth Device Disconnected";
+        });
+
+        const server = await device.gatt.connect();
+        statusEl.textContent = `Connected to: ${device.name || "Unnamed Device"}`;
+      } catch (err) {
+        statusEl.textContent = "Bluetooth unavailable, cancelled, or permission denied.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>

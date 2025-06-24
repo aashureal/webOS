@@ -4,51 +4,96 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./public/css/main.css" />
     <title>Document</title>
   </head>
   <body>
     <div id="desktop">
-      <div class="window">
-        <!-- Window Header -->
-        <div class="window__header">
-          <p class="window__name">Terminal</p>
-
-          <div class="btn__group">
-            <button class="window__btn min">
-              <i data-lucide="minus"></i></button
-            ><button class="window__btn max">
-              <i data-lucide="maximize-2"></i></button
-            ><button class="window__btn close"><i data-lucide="x"></i></button>
-          </div>
+      <div class="app__grid">
+        <!-- Icon -->
+        <div class="desktop__icon">
+          <i class="ri-computer-fill"></i>
+          <span class="app__name">My Computer</span>
         </div>
 
-        <!-- Window Content -->
-        <div class="window__content">
-          <p>Content not available.</p>
-        </div>
-      </div>
-      <div class="window" id="file-manager">
-        <!-- Window Header -->
-        <div class="window__header">
-          <p class="window__name">File Manager</p>
-
-          <div class="btn__group">
-            <button class="window__btn min">
-              <i data-lucide="minus"></i></button
-            ><button class="window__btn max">
-              <i data-lucide="maximize-2"></i></button
-            ><button class="window__btn close"><i data-lucide="x"></i></button>
-          </div>
+        <!-- Icon -->
+        <div class="desktop__icon">
+          <i class="ri-booklet-fill"></i>
+          <span class="app__name">Noepad</span>
         </div>
 
-        <!-- Window Content -->
-        <div class="window__content file-manager">
-          <p>Content not available.</p>
+        <!-- Icon -->
+        <div class="desktop__icon">
+          <i class="ri-notion-fill"></i>
+          <span class="app__name">Notion</span>
+        </div>
+
+        <!-- Icon -->
+        <div class="desktop__icon">
+          <i class="ri-delete-bin-5-fill"></i>
+          <span class="app__name">Trash</span>
         </div>
       </div>
     </div>
-    <!-- <div id="taskbar"></div> -->
+
+    <div id="taskbar">
+      <!-- left part -->
+      <div class="part weather__report"></div>
+
+      <!-- canter part -->
+      <div class="part task__items__list">
+        <button class="task__item">
+          <i class="ri-apps-fill"></i>
+        </button>
+        <button class="task__item">
+          <i class="ri-folder-6-fill"></i>
+        </button>
+        <button class="task__item">
+          <i class="ri-chrome-fill"></i>
+        </button>
+        <button class="task__item">
+          <i class="ri-terminal-box-fill"></i>
+        </button>
+      </div>
+
+      <!-- right part -->
+      <div class="part right__part">
+        <div class="icons__apps">
+          <i class="ri-wifi-fill"></i>
+          <i class="ri-bluetooth-connect-fill"></i>
+          <i class="ri-battery-fill"></i>
+        </div>
+
+        <div class="date__time__box">
+          <p class="time">00:00</p>
+          <p class="date">Tues Jun 24</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="app__window">
+      <!-- Window Header -->
+      <div class="window__header">
+        <p class="window__name">Terminal</p>
+
+        <div class="btn__group">
+          <button class="window__btn min">
+            <i data-lucide="minus"></i></button
+          ><button class="window__btn maximize">
+            <i data-lucide="maximize-2"></i></button
+          ><button class="window__btn close"><i data-lucide="x"></i></button>
+        </div>
+      </div>
+
+      <!-- Window Content -->
+      <div class="window__content terminal-content">
+        <p>Content not available.</p>
+      </div>
+    </div>
 
     <script>
       lucide.createIcons();

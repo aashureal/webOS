@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Mini Browser with Search API</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { display:flex; flex-direction:column; height:100vh; font-family:sans-serif; }
+    /* Tab Bar */
+    #tab-bar { display:flex; background:#333; color:#fff; padding:4px; overflow-x:auto; align-items:center; }
+    #tab-bar .tab { position:relative; padding:6px 12px; margin-right:4px; background:#444; cursor:pointer; border-radius:4px 4px 0 0; user-select:none; }
+    #tab-bar .tab.active { background:#1abc9c; }
+    #tab-bar .tab .close { position:absolute; top:2px; right:4px; font-weight:bold; cursor:pointer; }
+    #tab-bar #new-tab { background:#1abc9c; border:none; padding:6px 12px; cursor:pointer; border-radius:4px; margin-left:auto; }
+    /* Navigation */
+    #nav { display:flex; padding:6px; background:#eee; }
+    #nav input { flex:1; padding:6px; font-size:14px; border:1px solid #ccc; border-radius:4px; }
+    #nav button { margin-left:4px; padding:6px 12px; cursor:pointer; }
+    /* Content Area */
+    #content { flex:1; position:relative; }
+    iframe, .results { position:absolute; top:0; left:0; width:100%; height:100%; border:none; background:#fff; overflow:auto; display:none; }
+    .results ul { list-style:none; padding:10px; }
+    .results li { margin-bottom:12px; }
+    .results a { color:#1a0dab; font-size:16px; text-decoration:none; }
+    .results p { margin:4px 0 0; color:#545454; font-size:14px; }
+  </style>
+</head>
+<body>
+
+  <div id="tab-bar">
+    <button id="new-tab">➕ New Tab</button>
+  </div>
+
+  <div id="nav">
+    <input id="address" placeholder="Enter URL or search…" />
+    <button id="go">Go</button>
+  </div>
+
+  <div id="content"></div>
+
+  <script>
+    const tabBar    = document.getElementById('tab-bar');
+    const newTabBtn = document.getElementById('new-tab');
+    const address   = document.getElementById('address');
+    const goBtn     = document.getElementById('go');
+    const content   = document.getElementById('content');
+
+    let tabs = [], active = -1;
+
+    function createTab(defaultURL = '') {
+      const idx = tabs.length;
+      // Tab button
+      const tab = document.createElement('div');
+      tab.className = 'tab'; tab.dataset.idx = idx;
+      tab.textContent = `Tab ${idx+1}`;
+      const close = document.createElement('span');
+      close.className = 'close'; close.textContent = '×';
+      tab.appendChild(close);
+      tabBar.insertBefore(tab, newTabBtn);
+
+      // Iframe
+      const frame = document.createElement('iframe');
+      frame.src = defaultURL; content.appendChild(frame);
+
+      // Results container
+      const results = document.createElement('div');
+      results.className = 'results'; content.appendChild(results);
+
+      tabs.push({ tab, frame, results });
+      switchTab(idx);
+    }
+
+    function switchTab(idx) {
+      active = idx;
+      tabs.forEach(({tab, frame, results}, i) => {
+        tab.classList.toggle('active', i===idx);
+        frame.style.display = 'none';
+        results.style.display = 'none';
+      });
+      const { frame, results } = tabs[idx];
+      // if last action was a URL load, show iframe; else if search, show results
+      if (frame.src) {
+        frame.style.display = 'block';
+      } else {
+        results.style.display = 'block';
+      }
+      address.value = tabs[idx].lastQuery || '';
+    }
+
+    async function navigate() {
+      const u = address.value.trim();
+      const tabObj = tabs[active];
+      tabObj.lastQuery = u;
+      // URL?
+      if (/^https?:\/\//i.test(u)) {
+        tabObj.frame.src = u;
+        tabObj.results.style.display = 'none';
+        tabObj.frame.style.display = 'block';
+      } else {
+        // Search via DuckDuckGo Instant API
+        const api = `https://api.duckduckgo.com/?q=${encodeURIComponent(u)}&format=json&origin=*`;
+        tabObj.results.innerHTML = '<p>Searching…</p>';
+        tabObj.frame.style.display = 'none';
+        tabObj.results.style.display = 'block';
+        try {
+          const res = await fetch(api);
+          const data = await res.json();
+          const list = document.createElement('ul');
+          const topics = data.RelatedTopics.filter(t => t.Text && t.FirstURL);
+          topics.forEach(t => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" data-url="${t.FirstURL}">${t.Text}</a>` +
+                           `<p>${t.Result ? t.Result.replace(/<[^>]+>/g,'') : ''}</p>`;
+            list.appendChild(li);
+          });
+          tabObj.results.innerHTML = '';
+          tabObj.results.appendChild(list);
+        } catch (e) {
+          tabObj.results.innerHTML = '<p>Error fetching results</p>';
+        }
+      }
+    }
+
+    // Handle click on search result
+    content.addEventListener('click', e => {
+      if (e.target.matches('.results a')) {
+        e.preventDefault();
+        const url = e.target.dataset.url;
+        const tabObj = tabs[active];
+        tabObj.frame.src = url;
+        tabObj.results.style.display = 'none';
+        tabObj.frame.style.display = 'block';
+        address.value = url;
+      }
+    });
+
+    function closeTab(idx) {
+      const { tab, frame, results } = tabs[idx];
+      tab.remove(); frame.remove(); results.remove();
+      tabs.splice(idx, 1);
+      // Re-index tabs
+      tabs.forEach((t,i) => {
+        t.tab.dataset.idx = i;
+        t.tab.firstChild.nodeValue = `Tab ${i+1}`;
+      });
+      if (tabs.length) switchTab(Math.max(0, idx-1));
+      else address.value = '';
+    }
+
+    // Events
+    newTabBtn.onclick = () => createTab('');
+    goBtn.onclick = () => navigate();
+    address.addEventListener('keydown', e => { if (e.key==='Enter') navigate(); });
+    tabBar.addEventListener('click', e => {
+      const tabEl = e.target.closest('.tab');
+      if (!tabEl) return;
+      const i = +tabEl.dataset.idx;
+      if (e.target.classList.contains('close')) closeTab(i);
+      else switchTab(i);
+    });
+
+    // Init
+    window.addEventListener('load', () => createTab('https://duckduckgo.com'));
+  </script>
+</body>
+</html>
